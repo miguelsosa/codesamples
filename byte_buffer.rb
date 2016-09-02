@@ -3,12 +3,14 @@
 class ByteBuffer
   @debug
 
-  def initialize
+  def initialize(&block)
     @buffer = StringIO.new
     @debug = false
+    self.instance_eval(&block) unless block.nil?
   end
 
   def appendRaw(b)
+    puts "append Raw called with: #{b}"
     @buffer.write(b)
   end
 
@@ -77,10 +79,12 @@ class ByteBuffer
   end
 
   def start_debug
+    puts "start debug called"
     @debug = true
   end
 
   def end_debug
+    puts "end debug called"
     @debug = false
   end
 

@@ -1,5 +1,5 @@
-require 'rails_helper'
-require 'byte_buffer'
+#require 'rails_helper'
+require './byte_buffer'
 
 RSpec.describe "ByteBuffer" do
 
@@ -9,8 +9,8 @@ RSpec.describe "ByteBuffer" do
 
   context "data" do
     # Hmm not sure if these are relevant. These are accesses to
-    # underlying data structure which prvents us from changing the
-    # internals.  Since the implementaiton internals should not be
+    # underlying data structure which prevents us from changing the
+    # internals.  Since the implementation internals should not be
     # important, then perhaps we should not even have tests (or calls)
     # for this.
 
@@ -18,7 +18,7 @@ RSpec.describe "ByteBuffer" do
       expect(@b.buffer).to be_kind_of(StringIO) 
     end
 
-    it "returns content as a string finish is called" do
+    it "returns content as a string when finish is called" do
       val = "somedata"
       @b.appendRaw(val)
       expect(@b.finish).to eq(val)
@@ -132,5 +132,19 @@ RSpec.describe "ByteBuffer" do
       expect(@b.to_s).to eq(res)
     end
 
+    it "can initialize with a block" do
+      v = ["one", "two", "three"]
+      from_block = ByteBuffer.new do 
+        start_debug
+        appendBytes(v[0])
+        end_debug
+        appendBytes(v[1])
+        start_debug
+        appendBytes(v[2])
+      end
+      res = '{' + v[0] + '}' + v[1] + '{' + v[2] + '}'
+      expect(from_block.to_s).to eq(res)
+    end
+        
   end
 end
