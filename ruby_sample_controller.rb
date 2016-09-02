@@ -1,20 +1,21 @@
 ### The following is a sample controller for a ruby on rails
 ### application I built for a client.  I decided to provide this as an
 ### example of taking a framework code and expanding it for a
-### particular use or implementation with soem interesting conditions.
+### particular use or implementation with some interesting conditions.
 
 ### Note that there are some @todo items in this code. I apparently
-### found a problem with a newer version of rails. Some other todo
-### items were just notes of conversations I needed to have with some
-### of the project stakeholder before making some decisions, or
-### functionality for a future version.  This project was only a
+### found a problem with a newer version of rails (3.x to 4.x). Some
+### other todo items were just notes of conversations I needed to have
+### with some of the project stakeholder before making some decisions,
+### or functionality for a future version.  This project was only a
 ### prototype to explore some ideas in the software, so not all
 ### decisions made it to the final release before moving on to
 ### implementation of a java application.
 
-### Note that I've changed my condign style a bit since I wrote
-### this. Now I would move as much of the logic in this function to
-### the model itself and keep the controller more streamlined.
+### Note that I've changed my conding style since I wrote this. Now I
+### would move as much of the logic in this function to the model
+### itself and keep the controller more streamlined (fat model, slim
+### controller).
 
 class StudiesController < ApplicationController
   helper_method :sort_column, :sort_direction
