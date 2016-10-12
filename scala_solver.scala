@@ -14,7 +14,7 @@
    mine.
 
    Note that this is an introductory scala course so my style and
-   solutions may not be ideal, but it is a smaple code in scala.
+   solutions may not be ideal, but it is a sample code in scala.
 */
 
 package streams
