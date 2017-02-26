@@ -145,6 +145,9 @@ RSpec.describe "ByteBuffer" do
       res = '{' + v[0] + '}' + v[1] + '{' + v[2] + '}'
       expect(from_block.to_s).to eq(res)
     end
+
+    context "enumerable" do
+    end
         
   end
 end

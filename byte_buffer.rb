@@ -1,6 +1,7 @@
 # ByteBuffer builder class
 
 class ByteBuffer
+  include Enumerable
   @debug
 
   def initialize(&block)
@@ -76,6 +77,11 @@ class ByteBuffer
   def finish
     @buffer.close
     to_s
+  end
+
+  # Implement enumerable
+  def each(&block)
+    @buffer.rewind.each{|e| block.call(e)}
   end
 
   def start_debug
