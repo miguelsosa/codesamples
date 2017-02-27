@@ -131,19 +131,44 @@ defmodule ByteBuffer do
     appendNumber(buffer, n, 16)
   end
 
-#  def appendUTF(buffer, s)
+  @doc """
+  Append a UTF string with prepended byte size information
 
-#    e = s.force_encoding("utf-8")
-#    appendRaw("UTF_LENGTH:") if @debug
-#    appendShort(e.length)
-#    appendRaw("UTF_DATA:") if @debug
-#    appendBytes(e)
+  ## Parameters
+  - `buffer` - a byte buffer struct
+  - `string` - a string to append
+
+  ## Examples
+  	b1 = %ByteBuffer{data: "hello", debug: false}
+        appendUTF(b1, " world")
+        %ByteBuffer{data: <<104, 101, 108, 108, 111, 0, 0, 0, 6, 32, 119, 111, 114, 108, 
+            100>>, debug: false}
+
+  	b2 = %ByteBuffer{data: "hello", debug: true}
+        appendUTF(b2, " world")
+        %ByteBuffer{data: <<104, 101, 108, 108, 111, 85, 84, 70, 95, 76, 69, 78, 71, 84,
+            72, 58, 123, 0, 0, 0, 6, 125, 85, 84, 70, 95, 68, 65, 84, 65, 58, 123, 32,
+            119, 111, 114, 108, 100, 125>>, debug: true}
+  """
+  # Elixir strings are already utf-8 encoded
+  def appendUTF(%ByteBuffer{debug: true} = buffer, s) do
+    buffer
+    |> appendRaw("UTF_LENGTH:")
+    |> appendShort(byte_size(s))
+    |> appendRaw("UTF_DATA:")
+    |> appendBytes(s)
+  end
+
+  def appendUTF(buffer, s) do
+    buffer
+    |> appendShort(byte_size(s))
+    |> appendBytes(s)
+  end
+
+#  def to_s(buffer) do
+#    buffer.data
 #  end
-#
-#  def to_s
-#    @buffer.string
-#  end
-#
+
 #  def buffer
 #    @buffer
 #  end
