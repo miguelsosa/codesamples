@@ -165,19 +165,74 @@ defmodule ByteBuffer do
     |> appendBytes(s)
   end
 
-#  def to_s(buffer) do
-#    buffer.data
-#  end
+  @doc """
+  Returns raw bytes
 
-#  def buffer
-#    @buffer
-#  end
-#
-#  def hexstr
-#    @buffer.string.unpack('H*')[0].upcase
-#  end
-#
-#  def length
-#    @buffer.length
-#  end
+  ## Parameters
+  - `buffer` - a byte buffer struct
+
+  ## Examples
+  	b1 = %ByteBuffer{data: "hello", debug: false}
+        buffer(b1)
+        "hello"
+        """
+  # Note that if the buffer contains any unprintable bytes this will
+  # not return a string. Potentially we could return some sort of
+  # hybrid structure. Something like "hello" <> <<000, 001, 002>> <> " world"
+  def to_s(buffer) do
+    buffer.data
+  end
+
+  @doc """
+  Returns raw bytes
+
+  ## Parameters
+  - `buffer` - a byte buffer struct
+
+  ## Examples
+  	b1 = %ByteBuffer{data: "hello", debug: false}
+        buffer(b1)
+        "hello"
+  """
+  def buffer(buffer) do
+    buffer.data
+  end
+
+  @doc """
+  Returns a hex encoded string
+
+  ## Parameters
+  - `buffer` - a byte buffer struct
+
+  ## Examples
+  	b1 = %ByteBuffer{data: "abc", debug: false}
+        hexstr(b1)
+        "616263"
+
+  	b2 = %ByteBuffer{data: <<000, 255, 001, 126>>, debug: false}
+        hexstr(b2)
+        "00FF017E"
+  """
+  def hexstr(buffer) do
+    Base.encode16(buffer.data)
+  end
+
+  @doc """
+  Returns number of bytes in buffer
+
+  ## Parameters
+  - `buffer` - a byte buffer struct
+
+  ## Examples
+  	b1 = %ByteBuffer{data: "abc", debug: false}
+        size(b1)
+        3
+
+  	b2 = %ByteBuffer{data: <<000, 255, 001, 126>>, debug: false}
+        size(b2)
+        4
+  """
+  def size(buffer) do
+    byte_size(buffer.data)
+  end
 end
