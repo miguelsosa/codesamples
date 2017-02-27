@@ -34,7 +34,7 @@ defmodule ByteBuffer do
 
   ## Parameters
   - `buffer` - a byte buffer struct
-  - `bytes`  - bytes to append. Can also be a String.
+  - `data`   - bytes to append. Can also be a String.
 
   ## Examples
   	b1 = %ByteBuffer{data: "hello", debug: false}
@@ -44,6 +44,10 @@ defmodule ByteBuffer do
   	b2 = %ByteBuffer{data: <<000, 001>>, debug: true}
         appendBytes(b2, <<002, 003>>)
         %ByteBuffer{data: <<1, 2, 123, 3, 4, 125>>, debug: true}
+
+  	b3 = %ByteBuffer{data: "ab", debug: true}
+        appendBytes(b3, "cd")
+        %ByteBuffer{data: "ab{cd}", debug: true}
   """
   def appendBytes(%ByteBuffer{debug: true} = buffer, data ) do
     buffer
@@ -61,7 +65,7 @@ defmodule ByteBuffer do
   Convert hex string into bytes and append it to ByteBuffer
   ## Parameters
   - `buffer` - a byte buffer struct
-  - `bytes`  - bytes to append. Can also be a String.
+  - `hs`     - string containing a hex number
 
   ## Examples
   	b1 = %ByteBuffer{data: "hello", debug: false}
@@ -80,4 +84,75 @@ defmodule ByteBuffer do
       other            -> "An unknown error occurred: #{other}"
     end
   end
+
+  @doc """
+  Append numeric data with any necessary padding to fill appropriate number of bytes
+
+  ## Parameters
+  - `buffer` - a byte buffer struct
+  - `n`      - Number to append
+  - `nbytes` - number of bytes for number (used for padding or truncation)
+
+  ## Examples
+  	b1 = %ByteBuffer{data: "hello", debug: false}
+        appendNumber(b1, 257, 4)
+        %ByteBuffer{data: <<104, 101, 108, 108, 111, 0, 0, 1, 1>>, debug: false}
+
+  	b2 = %ByteBuffer{data: <<000, 001>>, debug: true}
+        appendNumber(b2, 257, 4)
+        bytestr (32) = 00000101
+        %ByteBuffer{data: <<0, 1, 123, 0, 0, 1, 1, 125>>, debug: true}
+  """
+  def appendNumber(buffer, n, nbytes) do
+    sz = nbytes * 8
+    appendable = <<n :: size(sz)>>
+    if buffer.debug do IO.puts "bytestr (#{sz}) = #{Base.encode16(appendable)}" end
+    appendBytes(buffer, appendable)
+  end
+
+  @doc """
+  Append numeric data with 4 bytes padding/truncation. See appendNumber/3
+  """
+  def appendShort(buffer, n) do
+    appendNumber(buffer, n, 4)
+  end
+
+  @doc """
+  Append numeric data with 8 bytes padding/truncation. See appendNumber/3
+  """
+  def appendInt(buffer, n) do
+    appendNumber(buffer, n, 8)
+  end
+
+  @doc """
+  Append numeric data with 16 bytes padding/truncation. See appendNumber/3
+  """
+  def appendLong(buffer, n) do
+    appendNumber(buffer, n, 16)
+  end
+
+#  def appendUTF(buffer, s)
+
+#    e = s.force_encoding("utf-8")
+#    appendRaw("UTF_LENGTH:") if @debug
+#    appendShort(e.length)
+#    appendRaw("UTF_DATA:") if @debug
+#    appendBytes(e)
+#  end
+#
+#  def to_s
+#    @buffer.string
+#  end
+#
+#  def buffer
+#    @buffer
+#  end
+#
+#  def hexstr
+#    @buffer.string.unpack('H*')[0].upcase
+#  end
+#
+#  def length
+#    @buffer.length
+#  end
 end
