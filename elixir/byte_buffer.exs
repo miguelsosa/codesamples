@@ -10,7 +10,7 @@ defmodule ByteBuffer do
   defstruct data: <<>>, debug: false
 
   @doc """
-  Concatenate 2 byte buffers. Returns a new ByteBuffer.
+  Appends a binary or string to a byte buffer. Returns a new ByteBuffer.
 
   ## Parameters
   - `buffer` - a byte buffer struct

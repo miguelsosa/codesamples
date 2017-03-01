@@ -10,8 +10,13 @@ defmodule Fibonacci do
     {:error, "Number must be positive to calculate fibonnaci sequence"}
   end
 
+  # Add ratio as the first item in the list - calculated with the
+  # biggest two items in the list. Thanks Michael!
   defp do_fib(v1, _, 0, l) do
-    l |> Enum.reverse
+    [f|[s|t]] = l
+    res = l |> Enum.reverse
+    ratio = f/s
+    [ratio | res]
   end
 
   defp do_fib(v1, v2, n, l) do
