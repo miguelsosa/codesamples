@@ -19,11 +19,11 @@ defmodule ByteBuffer do
   ## Examples
   	b1 = %ByteBuffer{data: "hello", debug: false}
         appendRaw(b1, " world")
-        %{__struct__: ByteBuffer, data: "hello world", debug: false}
+        %{__struct__: ByteBuffer, buffer: "hello world", debug: false}
 
   	b2 = %ByteBuffer{data: <<000, 001>>, debug: true}
         appendRaw(b2, <<002, 003>>)
-        %{__struct__: ByteBuffer, data: <<000, 001, 002, 003>>, debug: true}
+        %{__struct__: ByteBuffer, buffer: <<000, 001, 002, 003>>, debug: true}
   """
   def appendRaw(buffer, data) do
     %ByteBuffer{data: buffer.data <> data, debug: buffer.debug}
@@ -39,11 +39,11 @@ defmodule ByteBuffer do
   ## Examples
   	b1 = %ByteBuffer{data: "hello", debug: false}
         appendBytes(b1, " world")
-        %{__struct__: ByteBuffer, data: "hello world", debug: false}
+        %{__struct__: ByteBuffer, buffer: "hello world", debug: false}
 
   	b2 = %ByteBuffer{data: <<000, 001>>, debug: true}
         appendBytes(b2, <<002, 003>>)
-        %ByteBuffer{data: <<0, 1, 123, 2, 3, 125>>, debug: true}
+        %ByteBuffer{data: <<1, 2, 123, 3, 4, 125>>, debug: true}
 
   	b3 = %ByteBuffer{data: "ab", debug: true}
         appendBytes(b3, "cd")
